@@ -13,8 +13,8 @@ export default function Nav() {
   const { user, error, isLoading } = useUser();
   return (
     <NavStyles>
-      <Link href={"/homePage"}>Home</Link>
-      <Link href={"/"}>Shop</Link>
+      <Link href={"/"}>Home</Link>
+      <Link href={"/shop"}>Shop</Link>
       <Link href={"/about"}>About</Link>
       <Link href={"/contact"}>Contact</Link>
 

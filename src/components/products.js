@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Product({ product, index }) {
   // Extract the info from props
-  const { title, price, image, slug } = product.attributes;
+  const { title, price, image, slug, category } = product.attributes;
   const delay = index * 0.2;
 
   return (

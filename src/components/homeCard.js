@@ -1,77 +1,160 @@
+import { useStateContext } from "@/lib/context";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { useState } from "react";
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 95vh;
-`;
-
-const CardContainer = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 70%;
-`;
-
-const Card = styled(motion.div)`
-  width: ${({ selected }) => (selected ? "80%" : "30%")};
-  height: 100%;
-  background-color: #ddd;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-`;
-
-const CardText = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
-  font-size: 1.2rem;
-  text-align: center;
-`;
+import React, { useState } from "react";
+import HeroBanner from "./HeroBanner";
+import {
+  CardText,
+  Card,
+  Container,
+  CardContainer,
+  ImageWrap,
+  ImagesContainer,
+  CardTitle,
+  InfoCard,
+  SelectedCard,
+} from "../styles/HomeStyles";
+import data from "@/constants/data";
 
 export default function HomeCard() {
+  const { mushroomTitle, setMushroomTitle } = useStateContext();
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = (id) => {
+    setSelectedImage(id);
+  };
 
   return (
-    <Container>
-      <CardContainer>
-        {[1, 2, 3].map((card) => (
-          <Card
-            key={card}
-            selected={card === selectedCard}
-            animate={{
-              width: card === selectedCard ? "90%" : "25%",
-              height: card === selectedCard ? "100%" : "100%",
-              zIndex: card === selectedCard ? 2 : 1,
-              borderRadius: card === selectedCard ? 10 : 10,
-            }}
+    <>
+      <HeroBanner />
+
+      <Container>
+        <ImagesContainer>
+          <ImageWrap
+            src={"/chantrelle_fit.jpg"}
+            alt="Chantrelle"
+            selected={selectedImage === 1}
             onClick={() => {
-              if (card === selectedCard) {
-                setSelectedCard(null);
-              } else {
-                setSelectedCard(card);
-              }
+              handleImageClick(1);
+              setMushroomTitle("Chantrelle");
             }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <CardText>
-              {card === 1 ? "Information" : card === 2 ? "Products" : "Health"}
-            </CardText>
-          </Card>
-        ))}
-      </CardContainer>
-    </Container>
+          />
+          <ImageWrap
+            src={"/enoki.jpg"}
+            alt="Picture of the author"
+            selected={selectedImage === 2}
+            onClick={() => {
+              handleImageClick(2);
+              setMushroomTitle("Enoki");
+            }}
+          />
+          <ImageWrap
+            src={"/maitake_fit.jpg"}
+            alt="Picture of the author"
+            selected={selectedImage === 3}
+            onClick={() => {
+              handleImageClick(3);
+              setMushroomTitle("Maitake");
+            }}
+          />
+          <ImageWrap
+            src={"/oyster_fit.jpg"}
+            alt="Picture of the author"
+            selected={selectedImage === 4}
+            onClick={() => {
+              handleImageClick(4);
+              setMushroomTitle("Oyster");
+            }}
+          />
+        </ImagesContainer>
+
+        <CardContainer>
+          <CardTitle>{mushroomTitle}</CardTitle>
+          {[1, 2, 3].map((card) => (
+            <Card
+              key={card}
+              selected={card === selectedCard}
+              animate={{
+                width: card === selectedCard ? "90%" : "15%",
+                height: card === selectedCard ? "100%" : "15%",
+                zIndex: card === selectedCard ? 2 : 1,
+                borderRadius: card === selectedCard ? 10 : 10,
+              }}
+              onClick={() => {
+                if (card === selectedCard) {
+                  setSelectedCard(null);
+                } else {
+                  setSelectedCard(card);
+                }
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {card !== selectedCard && (
+                <CardText>
+                  {card === 1
+                    ? "Information"
+                    : card === 2
+                    ? "Products"
+                    : "Health"}
+                </CardText>
+              )}
+              {card === selectedCard && (
+                <SelectedCard>
+                  <h1>
+                    {card === 1
+                      ? "Information"
+                      : card === 2
+                      ? "Products"
+                      : "Health"}
+                  </h1>
+                  {(() => {
+                    switch (card) {
+                      case 1:
+                        return (
+                          <InfoCard>
+                            {(() => {
+                              switch (mushroomTitle) {
+                                case "Chantrelle":
+                                  // here is where i want to access the data
+                                  return <p>{data.ChantrelleInfo[0].desc}</p>;
+                                case "Enoki":
+                                  return <p>{data.EnokiInfo[0].desc}</p>;
+                                case "Maitake":
+                                  return <p>{data.MaitakeInfo[0].desc}</p>;
+                                case "Oyster":
+                                  return <p>{data.OysterInfo[0].desc}</p>;
+                                default:
+                                  return <p>No information available</p>;
+                              }
+                            })()}
+                          </InfoCard>
+                        );
+                      case 2:
+                        return (
+                          <>
+                            <p>Information about the second card...</p>
+                            <img src="image2.jpg" alt="Image 2" />
+                          </>
+                        );
+                      case 3:
+                        return (
+                          <>
+                            <p>Information about the third card...</p>
+                            <img src="image3.jpg" alt="Image 3" />
+                          </>
+                        );
+                      default:
+                        return null;
+                    }
+                  })()}
+                </SelectedCard>
+              )}
+            </Card>
+          ))}
+        </CardContainer>
+      </Container>
+    </>
   );
 }

@@ -9,6 +9,12 @@ export const StateContext = ({ children }) => {
   const [qty, setQty] = useState(1);
   const [totalQuantities, setTotalQuantitites] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 250]);
+  const [mushroomTitle, setMushroomTitle] = useState("Oyster");
+  const [bannerBackgroundImage, setBannerBackgroundImage] =
+    useState("/shop_banner.jpg");
 
   //Increase product countity
   const increaseQty = () => {
@@ -20,6 +26,10 @@ export const StateContext = ({ children }) => {
       if (prevQty - 1 < 1) return 1;
       return prevQty - 1;
     });
+  };
+
+  const onChangeTitle = (title) => {
+    setMushroomTitle(title);
   };
 
   //Add Product To Cart
@@ -83,6 +93,17 @@ export const StateContext = ({ children }) => {
         totalQuantities,
         totalPrice,
         setQty,
+        searchQuery,
+        setSearchQuery,
+        selectedCategory,
+        setSelectedCategory,
+        priceRange,
+        setPriceRange,
+        mushroomTitle,
+        setMushroomTitle,
+        onChangeTitle,
+        bannerBackgroundImage,
+        setBannerBackgroundImage,
       }}
     >
       {children}

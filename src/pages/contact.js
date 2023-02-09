@@ -1,81 +1,93 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { useState } from "react";
+import {
+  HeadText,
+  ContactCards,
+  ContactCard,
+  ContactForm,
+  Flex,
+} from "@/styles/ContactStyles";
 
-const FormContainer = styled(motion.form)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import { useRef } from "react";
+import emailjs from "@emailjs/browser";
 
-const Input = styled.input`
-  padding: 12px;
-  margin: 10px 0;
-  width: 100%;
-  box-sizing: border-box;
-`;
+export default function contact() {
+  const refForm = useRef();
 
-const TextArea = styled.textarea`
-  padding: 12px;
-  margin: 10px 0;
-  width: 100%;
-  box-sizing: border-box;
-  resize: none;
-`;
-
-const Button = styled(motion.button)`
-  padding: 12px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-`;
-
-export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
-    // Do something with the form data, like sending an email
+
+    emailjs
+      .sendForm(
+        "service_cbz99wo",
+        "template_fnsr7ii",
+        refForm.current,
+        "dRC32FkjslrSA40oy"
+      )
+      .then(
+        () => {
+          alert("Message successfully sent!");
+          window.location.reload(false);
+        },
+        () => {
+          alert("Failed to send the message, please try again");
+        }
+      );
   };
 
   return (
-    <FormContainer
-      animate={{ opacity: 1 }}
-      initial={{ opacity: 0 }}
-      onSubmit={handleSubmit}
-    >
-      <Input
-        type="email"
-        name="email"
-        placeholder="Email"
-        onChange={handleChange}
-        value={formData.email}
-      />
-      <Input
-        type="text"
-        name="subject"
-        placeholder="Subject"
-        onChange={handleChange}
-        value={formData.subject}
-      />
-      <TextArea
-        name="message"
-        placeholder="Message"
-        onChange={handleChange}
-        value={formData.message}
-      />
-      <Button type="submit">Submit</Button>
-    </FormContainer>
+    <>
+      <HeadText>
+        Contact us
+        <br />
+        start your myco journey today
+      </HeadText>
+
+      <ContactCards>
+        <ContactCard>
+          {/* <img src={images.email} alt="email" /> */}
+          <a href="mailto:mcourtnelldev@gmail.com" className="p-text">
+            MCourtnellDev@gmail.com
+          </a>
+        </ContactCard>
+        <ContactCard>
+          {/* <img src={images.mobile} alt="phone" /> */}
+          <a href="tel:+370(657)29818" className="p-text">
+            +370 (657) 29818
+          </a>
+        </ContactCard>
+      </ContactCards>
+
+      <ContactForm>
+        <form ref={refForm} onSubmit={sendEmail}>
+          <ul>
+            <Flex>
+              <input type="text" name="name" placeholder="Name" required />
+            </Flex>
+            <Flex>
+              <input type="email" name="email" placeholder="Email" required />
+            </Flex>
+            <Flex>
+              <input
+                placeholder="Subject"
+                type="text"
+                name="subject"
+                required
+              />
+            </Flex>
+            <div>
+              <textarea
+                placeholder="Message"
+                name="message"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <input type="submit" className="flat-button" value="SEND" />
+            </div>
+          </ul>
+        </form>
+      </ContactForm>
+    </>
   );
 }
