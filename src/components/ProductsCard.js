@@ -5,8 +5,8 @@ import { useStateContext } from "@/lib/context";
 import data from "@/constants/data";
 
 const Card = styled(motion.div)`
-  padding: 0.75rem 1.5rem;
-  background: transparent;
+  padding: 0.25rem 2.5rem;
+  background: ${(props) => (props.isOpen ? "white" : "transparent")};
   cursor: pointer;
 `;
 
@@ -23,6 +23,10 @@ const CardContent = styled(motion.div)`
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  position: absolute;
+
+  transform: ${(props) =>
+    props.isOpen ? "translate(0, 2.2rem)" : "translate(-20rem, -20rem)"};
 `;
 
 const Icon = styled.img`
@@ -35,7 +39,7 @@ const CardTitle = styled.h2`
   color: black;
 `;
 
-const about = () => {
+const ProductsCard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { mushroomTitle, setMushroomTitle, selectedCard, setSelectedCard } =
     useStateContext();
@@ -48,6 +52,7 @@ const about = () => {
       transition={{ duration: 1 }}
     >
       <Card
+        isOpen={isOpen}
         transition={{ layout: { duration: 1, type: "spring" } }}
         layout
         onClick={() => setIsOpen(!isOpen)}
@@ -56,8 +61,8 @@ const about = () => {
           boxShadow: "0px 10px 30px rgba(0,0,0,0.5)",
         }}
       >
-        {isOpen && <CardTitle layout="position">Health</CardTitle>}
-        {!isOpen && <Icon src="/health_icon.png" />}
+        {isOpen && <CardTitle layout="position">Products</CardTitle>}
+        {!isOpen && <Icon src="/shop_icon.png" />}
 
         {isOpen && (
           <CardContent
@@ -76,4 +81,4 @@ const about = () => {
   );
 };
 
-export default about;
+export default ProductsCard;

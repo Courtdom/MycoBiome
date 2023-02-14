@@ -25,27 +25,12 @@ export const CardContainer = styled(motion.div)`
   border-radius: 1.5rem;
 `;
 
-export const Card = styled(motion.div)`
-  width: ${({ selected }) => (selected ? "80%" : "30%")};
-  height: 100%;
-  margin: 2rem 2rem;
-  background-color: #ddd;
-  opacity: 0.5;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-`;
-
-export const CardText = styled.div`
+export const CardImg = styled.img`
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) rotate(-90deg);
+
+  transform: translate(-50%, -50%);
   font-size: 1.2rem;
   text-align: center;
 `;
@@ -83,30 +68,9 @@ export const ImagesContainer = styled.div`
 export const CardTitle = styled.h2`
   text-align: center;
   position: absolute;
-  font-size: 2rem;
+  font-size: 3rem;
   color: white;
   top: 1rem;
   width: 100%;
   margin: 0;
-`;
-
-export const InfoCard = styled.div`
-  h2 {
-  }
-  p {
-    font-size: 1.25rem;
-    text-align: center;
-  }
-`;
-
-export const SelectedCard = styled.div`
-  display: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  h1 {
-    margin: 1rem 0;
-    text-align: center;
-    font-size: 2rem;
-  }
 `;
